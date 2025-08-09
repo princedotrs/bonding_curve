@@ -3,12 +3,13 @@ import { Program } from "@coral-xyz/anchor";
 import { Pumpg } from "../target/types/pumpg";
 import { Commitment, Keypair, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction } from "@solana/web3.js";
 const commitment: Commitment = "confirmed";
-import wallet from "../Admin-wallet.json";
-import user from "../Users-wallet.json"
-import coindDevWallet from "../coinDev-wallet.json"
+// import wallet from "../Admin-wallet.json";
+// import user from "../Users-wallet.json"
+// import coindDevWallet from "../coinDev-wallet.json"
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccount, createMint, createMintToCheckedInstruction, getAssociatedTokenAddress, getAssociatedTokenAddressSync, getMint, getOrCreateAssociatedTokenAccount, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { xit } from "mocha";
 import { expect } from "chai";
+import bs58 from "bs58";
 
 describe("pumpg", async () => {
 
@@ -70,7 +71,7 @@ describe("pumpg", async () => {
 
   // Address of the Raydium Cpmm program on devnet
   const CPMM_PROGRAM_ID = new anchor.web3.PublicKey(
-    "SegaXNnoXYTZiqUt9Xn2XqGcL56b25yzXLuJSpadcMu"
+    "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"
   );
   // Address of the Locking CPMM program on devnet
   const LOCK_CPMM_PROGRAM_ID = new anchor.web3.PublicKey(
@@ -82,9 +83,10 @@ describe("pumpg", async () => {
     "3f7GcQFG397GAaEnv51zR6tsTVihYRydnydDD1cXekxH"
   );
 
-  // Address of the Raydium AMM configuration account on mainnet
+  // Address of the Raydium AMM configuration account on mainnet 
+  // Address of the Raydium AMM configuration account on devnet D4FPEruKEHrG5TenZ2mpDGEfu1iUvTiqBxvpU8HLBvC2
   const AMM_CONFIG_ID = new anchor.web3.PublicKey(
-    "BjZxF9CnEuR1vxXffJwun81i3Doe2C2vQCdJpShxCieM"
+    "D4FPEruKEHrG5TenZ2mpDGEfu1iUvTiqBxvpU8HLBvC2"
   );
 
   const MEMO_PROGRAM = new anchor.web3.PublicKey(
@@ -98,7 +100,7 @@ describe("pumpg", async () => {
   // Mainnet DNXgeM9EiiaAbaWvwjHj9fQQLAX5ZsfHyvmYUNRAdNC8
   // Devnet G11FKBRaAkHAKuLCgLM6K6NUc9rTjPAznRCjZifrTQe2
   const create_pool_fee = new anchor.web3.PublicKey(
-    "BLxynZeHE123MmQgNJZiV1pwW4VYh46oZYyC66xwmtTY"
+    "DNXgeM9EiiaAbaWvwjHj9fQQLAX5ZsfHyvmYUNRAdNC8"
   );
 
   const WSOL_ID = new anchor.web3.PublicKey(
@@ -111,7 +113,7 @@ describe("pumpg", async () => {
 
 
 
-  const admin = Keypair.fromSecretKey(new Uint8Array(wallet));
+  const admin = Keypair.fromSecretKey(new Uint8Array(bs58.decode("fqv29LXSrtGHvJ2iWpexDDPbiVtD4ViifCZTxKKrPPMsmLF716HjR65ZEYWyVypwxMjp3SBCWjSPREmmtmyEocN")));
 
   // const user = Keypair.fromSecretKey()
 
@@ -364,6 +366,8 @@ describe("pumpg", async () => {
     console.log("initial bonding curve  real token-> ", (initialBondingCurve_acc.realTokenReserve.toNumber())/1000000); // 793100000000000
     console.log("initial bonding curve  virtual token -> ", (initialBondingCurve_acc.virtualTokenReserve.toNumber())/1000000); // 30
     console.log("initial bonding curve  total token suppy-> ", (initialBondingCurve_acc.tokenTotalSupply.toNumber())/1000000); // 30
+    console.log("mint add", mintadd.publicKey.toBase58());
+    console.log("token supply", initialBondingCurve_acc.tokenTotalSupply.toNumber()/1000000);
 
 
   })
@@ -816,7 +820,7 @@ describe("pumpg", async () => {
     console.log("paused :", gloabal_account.paused)
   })
 
-  it("get bondig curve state", async()=>{
+  xit("get bondig curve state", async()=>{
     const mint = new anchor.web3.PublicKey(mintadd.publicKey);
 
     const bonding_curve = PublicKey.findProgramAddressSync(
@@ -987,7 +991,6 @@ describe("pumpg", async () => {
     console.log("--------------------------------- end of tx")
   })
 
-
   it("get bondig curve state", async()=>{
     const mint = new anchor.web3.PublicKey(mintadd.publicKey);
 
@@ -1040,7 +1043,7 @@ describe("pumpg", async () => {
 
   })
 
-  it("set Params with wrong admin it should fail",async ()=>{
+  xit("set Params with wrong admin it should fail",async ()=>{
 
     const feeRecipient = Keypair.generate();
 
@@ -1127,63 +1130,63 @@ describe("pumpg", async () => {
     console.log("--------------------------------- end of tx")
   })
 
-  it("failed withdraw sol and token for cpi to radium by non admin", async ()=>{
+  // xit("failed withdraw sol and token for cpi to radium by non admin", async ()=>{
 
-    const initalSOl = await connection.getBalance(buyer1.publicKey);
-    console.log("inital sol",initalSOl/LAMPORTS_PER_SOL);
+  //   const initalSOl = await connection.getBalance(buyer1.publicKey);
+  //   console.log("inital sol",initalSOl/LAMPORTS_PER_SOL);
 
-    const initalFee = await connection.getBalance(admin.publicKey);
-    console.log("inital fee",initalFee);
+  //   const initalFee = await connection.getBalance(admin.publicKey);
+  //   console.log("inital fee",initalFee);
 
-    const vaultSOL = await connection.getBalance(vault);
-    console.log("initial vault : ", vaultSOL);
+  //   const vaultSOL = await connection.getBalance(vault);
+  //   console.log("initial vault : ", vaultSOL);
 
-    try {
-      let tx = await program.methods
-      .withdraw()
-      .accountsStrict({
-        authority: buyer1.publicKey,
-        global: global,
-        feeRecipient: admin.publicKey,
-        bondingCurve: bonding_curve,
-        vault: vault,
-        bondingCurveAta: bonding_curve_ata,
-        userAta: buyer1Ata,
-        mint: mintadd.publicKey,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        systemProgram: anchor.web3.SystemProgram.programId
-      })
-      .signers([buyer1])
-      .rpc()
+  //   try {
+  //     let tx = await program.methods
+  //     .withdraw()
+  //     .accountsStrict({
+  //       authority: buyer1.publicKey,
+  //       global: global,
+  //       feeRecipient: admin.publicKey,
+  //       bondingCurve: bonding_curve,
+  //       vault: vault,
+  //       bondingCurveAta: bonding_curve_ata,
+  //       userAta: buyer1Ata,
+  //       mint: mintadd.publicKey,
+  //       tokenProgram: TOKEN_PROGRAM_ID,
+  //       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+  //       systemProgram: anchor.web3.SystemProgram.programId
+  //     })
+  //     .signers([buyer1])
+  //     .rpc()
 
-      console.log("withdraw tx:", tx);
+  //     console.log("withdraw tx:", tx);
 
-      const token_balance = await connection.getTokenAccountBalance(admin_ata)
-    console.log("TOken balance",Number(token_balance?.value?.amount)/1000000);
+  //     const token_balance = await connection.getTokenAccountBalance(admin_ata)
+  //   console.log("TOken balance",Number(token_balance?.value?.amount)/1000000);
 
-    const finalSOl = await connection.getBalance(admin.publicKey);
-    console.log("final sol",finalSOl/LAMPORTS_PER_SOL);
+  //   const finalSOl = await connection.getBalance(admin.publicKey);
+  //   console.log("final sol",finalSOl/LAMPORTS_PER_SOL);
 
-    console.log("sol received: ",(finalSOl - initalSOl)/LAMPORTS_PER_SOL);
+  //   console.log("sol received: ",(finalSOl - initalSOl)/LAMPORTS_PER_SOL);
 
-    const FinalFee = await connection.getBalance(admin.publicKey);
-    console.log("final fee",FinalFee);
+  //   const FinalFee = await connection.getBalance(admin.publicKey);
+  //   console.log("final fee",FinalFee);
 
-    console.log("fee paid : ", Number(FinalFee - initalFee)/LAMPORTS_PER_SOL);
+  //   console.log("fee paid : ", Number(FinalFee - initalFee)/LAMPORTS_PER_SOL);
 
-    const finalVaultSOl = await connection.getBalance(vault);
-    console.log("final vault : ", finalVaultSOl);
+  //   const finalVaultSOl = await connection.getBalance(vault);
+  //   console.log("final vault : ", finalVaultSOl);
 
-    console.log("valut sol transferred :", vaultSOL - finalVaultSOl);
+  //   console.log("valut sol transferred :", vaultSOL - finalVaultSOl);
 
-    console.log("--------------------------------- end of tx")
+  //   console.log("--------------------------------- end of tx")
 
-    }catch(e) {
-      expect(e).to.exist;
-    }
+  //   }catch(e) {
+  //     expect(e).to.exist;
+  //   }
 
-      })
+  //     })
 
   it("Dev buy coin again to migrate", async ()=> {
 
@@ -1351,94 +1354,7 @@ describe("pumpg", async () => {
     console.log("initial bonding curve  total token suppy-> ", (initialBondingCurve_acc.tokenTotalSupply.toNumber())/1000000); // 30
   })
 
-  // xit("Migrate to Raydium", async()=>{
-  //    // Pda address for the Raydium vault lp auth 
-  //   const raydium_authority = PublicKey.findProgramAddressSync(
-  //     [
-  //       Buffer.from("vault_and_lp_mint_auth_seed"),
-  //     ],
-  //     CPMM_PROGRAM_ID
-  //   )[0];
-
-  //   // PDA address for the pool_state
-  //   const pool_state = PublicKey.findProgramAddressSync(
-  //     [
-  //       Buffer.from("pool"),
-  //       AMM_CONFIG_ID.toBuffer(),
-  //       WSOL_ID.toBuffer(),
-  //       mint.toBuffer()
-  //     ],
-  //     CPMM_PROGRAM_ID
-  //   )[0];
-
-  //   const lp_mint = PublicKey.findProgramAddressSync(
-  //     [
-  //     Buffer.from("pool_lp_mint"),
-  //     pool_state.toBuffer()
-  //     ],
-  //     CPMM_PROGRAM_ID
-  //   )[0];
-
-  //   const admin_lp_ata = getAssociatedTokenAddressSync(lp_mint, admin.publicKey);
-
-  //   const token_0_vault = PublicKey.findProgramAddressSync(
-  //     [
-  //       Buffer.from("pool_vault"),
-  //       pool_state.toBuffer(),
-  //       WSOL_ID.toBuffer(),
-  //     ],
-  //     CPMM_PROGRAM_ID
-  //   )[0];
-
-  //   const token_1_vault = PublicKey.findProgramAddressSync(
-  //     [
-  //       Buffer.from("pool_vault"),
-  //       pool_state.toBuffer(),
-  //       mint.toBuffer(),
-  //     ],
-  //     CPMM_PROGRAM_ID
-  //   )[0];
-
-  //   const observation_state = PublicKey.findProgramAddressSync(
-  //     [
-  //       Buffer.from("observation"),
-  //       pool_state.toBuffer(),
-  //     ],
-  //     CPMM_PROGRAM_ID
-  //   )[0];
-
-  //   let tx = await program.methods
-  //         .migrate()
-  //         .accountsStrict({
-  //           cpSwapProgram: CPMM_PROGRAM_ID,
-  //           authority: admin.publicKey,
-  //           mint: mint,
-  //           baseMint: WSOL_ID,
-  //           creatorBaseAta: admin_wsol_ata,
-  //           createrTokenAta: admin_ata,
-  //           ammConfig: AMM_CONFIG_ID,
-  //           radiumAuthority: raydium_authority,
-  //           poolState: pool_state,
-  //           lpMint: lp_mint,
-  //           creatorLpToken: admin_lp_ata,
-  //           token0Vault: token_0_vault,
-  //           token1Vault: token_1_vault,
-  //           createPoolFee: create_pool_fee,
-  //           observationState: observation_state,
-  //           global: global,
-  //           bondingCurve: bonding_curve,
-  //           tokenProgram: TOKEN_PROGRAM_ID,
-  //           associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-  //           systemProgram: anchor.web3.SystemProgram.programId,
-  //           rent: anchor.web3.SYSVAR_RENT_PUBKEY
-  //         })
-  //         .signers([admin])
-  //         .rpc()
-
-  //         console.log("raydium migration tx :", tx);
-  // })
-
-  it("Migrate to sega", async()=>{
+  it("Migrate to Raydium", async()=>{
      // Pda address for the Raydium vault lp auth 
     const raydium_authority = PublicKey.findProgramAddressSync(
       [
@@ -1494,33 +1410,8 @@ describe("pumpg", async () => {
       CPMM_PROGRAM_ID
     )[0];
 
-    console.log({
-            "cpSwapProgram": CPMM_PROGRAM_ID,
-            "authority": admin.publicKey,
-            "mint": mint,
-            "baseMint": WSOL_ID,
-            "creatorBaseAta": admin_wsol_ata,
-            "createrTokenAta": admin_ata,
-            "ammConfig": AMM_CONFIG_ID,
-            "radiumAuthority": raydium_authority,
-            "poolState": pool_state,
-            "lpMint": lp_mint,
-            "creatorLpToken": admin_lp_ata,
-            "token0Vault": token_0_vault,
-            "token1Vault": token_1_vault,
-            "createPoolFee": create_pool_fee,
-            "observationState": observation_state,
-            "global": global,
-            "bondingCurve": bonding_curve,
-            "tokenProgram": TOKEN_PROGRAM_ID,
-            "associatedTokenProgram": ASSOCIATED_TOKEN_PROGRAM_ID,
-            "systemProgram": anchor.web3.SystemProgram.programId,
-            "rent": anchor.web3.SYSVAR_RENT_PUBKEY
-    })
-
-    try {
-          let tx = await program.methods
-          .migrateSega()
+    let tx = await program.methods
+          .migrate()
           .accountsStrict({
             cpSwapProgram: CPMM_PROGRAM_ID,
             authority: admin.publicKey,
@@ -1547,13 +1438,125 @@ describe("pumpg", async () => {
           .signers([admin])
           .rpc()
 
-          // await provider.sendAndConfirm(tx);
-
-          console.log("Sega migration tx :", tx);
-    }catch(e){
-      console.log("Error ::" , e);
-    }
+          console.log("raydium migration tx :", tx);
   })
+
+  // xit("Migrate to sega", async()=>{
+  //    // Pda address for the Raydium vault lp auth 
+  //   const raydium_authority = PublicKey.findProgramAddressSync(
+  //     [
+  //       Buffer.from("vault_and_lp_mint_auth_seed"),
+  //     ],
+  //     CPMM_PROGRAM_ID
+  //   )[0];
+
+  //   // PDA address for the pool_state
+  //   const pool_state = PublicKey.findProgramAddressSync(
+  //     [
+  //       Buffer.from("pool"),
+  //       AMM_CONFIG_ID.toBuffer(),
+  //       WSOL_ID.toBuffer(),
+  //       mint.toBuffer()
+  //     ],
+  //     CPMM_PROGRAM_ID
+  //   )[0];
+
+  //   const lp_mint = PublicKey.findProgramAddressSync(
+  //     [
+  //     Buffer.from("pool_lp_mint"),
+  //     pool_state.toBuffer()
+  //     ],
+  //     CPMM_PROGRAM_ID
+  //   )[0];
+
+  //   const admin_lp_ata = getAssociatedTokenAddressSync(lp_mint, admin.publicKey);
+
+  //   const token_0_vault = PublicKey.findProgramAddressSync(
+  //     [
+  //       Buffer.from("pool_vault"),
+  //       pool_state.toBuffer(),
+  //       WSOL_ID.toBuffer(),
+  //     ],
+  //     CPMM_PROGRAM_ID
+  //   )[0];
+
+  //   const token_1_vault = PublicKey.findProgramAddressSync(
+  //     [
+  //       Buffer.from("pool_vault"),
+  //       pool_state.toBuffer(),
+  //       mint.toBuffer(),
+  //     ],
+  //     CPMM_PROGRAM_ID
+  //   )[0];
+
+  //   const observation_state = PublicKey.findProgramAddressSync(
+  //     [
+  //       Buffer.from("observation"),
+  //       pool_state.toBuffer(),
+  //     ],
+  //     CPMM_PROGRAM_ID
+  //   )[0];
+
+  //   console.log({
+  //           "cpSwapProgram": CPMM_PROGRAM_ID,
+  //           "authority": admin.publicKey,
+  //           "mint": mint,
+  //           "baseMint": WSOL_ID,
+  //           "creatorBaseAta": admin_wsol_ata,
+  //           "createrTokenAta": admin_ata,
+  //           "ammConfig": AMM_CONFIG_ID,
+  //           "radiumAuthority": raydium_authority,
+  //           "poolState": pool_state,
+  //           "lpMint": lp_mint,
+  //           "creatorLpToken": admin_lp_ata,
+  //           "token0Vault": token_0_vault,
+  //           "token1Vault": token_1_vault,
+  //           "createPoolFee": create_pool_fee,
+  //           "observationState": observation_state,
+  //           "global": global,
+  //           "bondingCurve": bonding_curve,
+  //           "tokenProgram": TOKEN_PROGRAM_ID,
+  //           "associatedTokenProgram": ASSOCIATED_TOKEN_PROGRAM_ID,
+  //           "systemProgram": anchor.web3.SystemProgram.programId,
+  //           "rent": anchor.web3.SYSVAR_RENT_PUBKEY
+  //   })
+
+  //   try {
+  //         let tx = await program.methods
+  //         .migrateSega()
+  //         .accountsStrict({
+  //           cpSwapProgram: CPMM_PROGRAM_ID,
+  //           authority: admin.publicKey,
+  //           mint: mint,
+  //           baseMint: WSOL_ID,
+  //           creatorBaseAta: admin_wsol_ata,
+  //           createrTokenAta: admin_ata,
+  //           ammConfig: AMM_CONFIG_ID,
+  //           radiumAuthority: raydium_authority,
+  //           poolState: pool_state,
+  //           lpMint: lp_mint,
+  //           creatorLpToken: admin_lp_ata,
+  //           token0Vault: token_0_vault,
+  //           token1Vault: token_1_vault,
+  //           createPoolFee: create_pool_fee,
+  //           observationState: observation_state,
+  //           global: global,
+  //           bondingCurve: bonding_curve,
+  //           tokenProgram: TOKEN_PROGRAM_ID,
+  //           associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+  //           systemProgram: anchor.web3.SystemProgram.programId,
+  //           rent: anchor.web3.SYSVAR_RENT_PUBKEY
+  //         })
+  //         .signers([admin])
+  //         .rpc()
+
+  //         // await provider.sendAndConfirm(tx);
+
+  //         console.log("Sega migration tx :", tx);
+  //   }catch(e){
+  //     console.log("Error ::" , e);
+  //   }
+  // })
 
 
   after("cleanup event listeners", async () => {

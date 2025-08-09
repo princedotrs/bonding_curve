@@ -76,13 +76,13 @@ pub mod pumpg {
     //     ctx.accounts.withdraw_funds()
     // }
 
-    // pub fn transfer_and_wrap_sol(ctx: Context<TransferSol>) -> Result<()> {
-    //     ctx.accounts.prepare_for_migration()
-    // }
+    pub fn transfer_and_wrap_sol(ctx: Context<TransferSol>) -> Result<()> {
+        ctx.accounts.prepare_for_migration()
+    }
 
-    // pub fn migrate(ctx: Context<CreateCpmmPool>) -> Result<()> {
-    //     ctx.accounts.create_cpmm_pool()
-    // }
+    pub fn migrate(ctx: Context<CreateCpmmPool>) -> Result<()> {
+        ctx.accounts.create_cpmm_pool()
+    }
 
     // pub fn migrate_sega(ctx: Context<InitialiseSegaPool>) -> Result<()> {
     //     ctx.accounts.create_sega_pool()

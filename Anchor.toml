@@ -5,14 +5,16 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.devnet]
+[programs.localnet]
 pumpg = "DADtiPM9Jgr53UWxVDUnA7WzBNFj5itGQ8ZamJpSnnGL"
 
 [registry]
-url = "https://api.testnet.sonic.game"
+# url = "https://api.testnet.sonic.game"
+url = "https://api.apr.dev"
 
 [provider]
-cluster = "https://api.testnet.sonic.game"
+# cluster = "https://api.testnet.sonic.game"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
