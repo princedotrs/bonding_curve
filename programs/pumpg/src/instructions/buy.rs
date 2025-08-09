@@ -72,7 +72,7 @@ impl <'info> Buy <'info> {
 
         require!(amount > 0 && amount <= u64::MAX, Errors::Underflow); // use forever
 
-        require!(amount <= self.bonding_curve.real_token_reserve, Errors::InsufficientTokens); // use forever
+        // require!(amount <= self.bonding_curve.real_token_reserve, Errors::InsufficientTokens); // use forever
 
         require!(max_sol_cost > 0 , Errors::Underflow);
 
