@@ -27,7 +27,7 @@ upgradeable = false
 
 [test.validator]
 bind_address = "0.0.0.0"
-url = "https://few-twilight-wish.solana-mainnet.quiknode.pro/5337a237aaeecd58b8c43a375c78a541aafccf04"
+url = "https://api.mainnet-beta.solana.com"
 ledger = ".anchor/test-ledger"
 rpc_port = 8899
 
