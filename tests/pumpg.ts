@@ -113,7 +113,7 @@ describe("pumpg", async () => {
 
 
 
-  const admin = Keypair.fromSecretKey(new Uint8Array(bs58.decode("fqv29LXSrtGHvJ2iWpexDDPbiVtD4ViifCZTxKKrPPMsmLF716HjR65ZEYWyVypwxMjp3SBCWjSPREmmtmyEocN")));
+  const admin = Keypair.fromSecretKey(new Uint8Array(bs58.decode(process.env.ADMIN_SECRET_KEY!)));
 
   // const user = Keypair.fromSecretKey()
 
